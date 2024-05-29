@@ -9,6 +9,7 @@ import UIKit
 
 class ProductsListCoordinator: Coordinator {
     var navigationController: UINavigationController
+    var childCoordinators = [Coordinator]()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -22,6 +23,7 @@ class ProductsListCoordinator: Coordinator {
     
     func showProductDetails(for product: Product) {
         let productDetailsCoordinator = ProductDetailsCoordinator(navigationController: navigationController, product: product)
+        childCoordinators.append(productDetailsCoordinator)
         productDetailsCoordinator.start()
     }
 }

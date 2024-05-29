@@ -10,6 +10,7 @@ import UIKit
 class ProductDetailsCoordinator: Coordinator {
     var navigationController: UINavigationController
     var product: Product
+    var childCoordinators = [Coordinator]()
     
     init(navigationController: UINavigationController, product: Product) {
         self.navigationController = navigationController
