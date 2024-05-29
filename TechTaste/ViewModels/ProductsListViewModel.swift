@@ -11,7 +11,8 @@ class ProductsListViewModel {
     
     var products: Observable<[Product]> = Observable([])
     var isLoading: Observable<Bool> = Observable(false)
-
+    var cellDataSource: Observable<[ProductTableCellViewModel]> = Observable([])
+    
     private var networkingManager: NetworkingManager
     
     init(networkingManager: NetworkingManager = NetworkingManager()) {
@@ -28,6 +29,9 @@ class ProductsListViewModel {
             case .success(let products):
                 DispatchQueue.main.async {
                     self.products.value = products
+                    self.cellDataSource.value = products.compactMap({ product in
+                        ProductTableCellViewModel(product: product)
+                    })
                 }
             case .failure(let failure):
                 print("Ocorreu um erro ao obter produtos: \(failure.localizedDescription)")
