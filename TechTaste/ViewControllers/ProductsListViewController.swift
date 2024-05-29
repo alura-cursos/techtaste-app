@@ -15,7 +15,7 @@ class ProductsListViewController: UIViewController {
     
     private var viewModel: ProductsListViewModel
     
-    weak var coordinator: MainCoordinator?
+    weak var coordinator: ProductsListCoordinator?
     
     init(viewModel: ProductsListViewModel = ProductsListViewModel()) {
         self.viewModel = viewModel
