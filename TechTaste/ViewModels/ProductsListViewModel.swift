@@ -9,7 +9,7 @@ import Foundation
 
 class ProductsListViewModel {
     
-    var products: [Product] = []
+    var products: Observable<[Product]> = Observable([])
     private var networkingManager: NetworkingManager
     
     init(networkingManager: NetworkingManager = NetworkingManager()) {
@@ -22,7 +22,7 @@ class ProductsListViewModel {
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {
-                    self.products = products
+                    self.products.value = products
                 }
             case .failure(let failure):
                 print("Ocorreu um erro ao obter produtos: \(failure.localizedDescription)")
@@ -31,6 +31,6 @@ class ProductsListViewModel {
     }
     
     func getNumberOfRowsOfTableView() -> Int {
-        return products.count
+        return products.value?.count ?? 0
     }
 }

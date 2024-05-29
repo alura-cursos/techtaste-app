@@ -9,7 +9,7 @@ import UIKit
 
 class ProductsListViewController: UIViewController {
     
-    //private var products: [Product] = []
+    private var products: [Product] = []
     //private var productsRepository: ProductsRepository
     
     private var viewModel: ProductsListViewModel
@@ -38,6 +38,7 @@ class ProductsListViewController: UIViewController {
         setupUI()
         addSubviews()
         setupConstraints()
+        bindViewModel()
         getProducts()
     }
     
@@ -71,6 +72,18 @@ class ProductsListViewController: UIViewController {
         viewModel.getAllProducts()
         tableView.reloadData()
     }
+    
+    private func bindViewModel() {
+        bindProducts()
+    }
+    
+    private func bindProducts() {
+        viewModel.products.bind { [weak self] products in
+            guard let self = self, let products else { return }
+            self.products = products
+            self.tableView.reloadData()
+        }
+    }
 }
 
 extension ProductsListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -80,7 +93,7 @@ extension ProductsListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as? ProductsListTableViewCell else { return UITableViewCell() }
-        let product = viewModel.products[indexPath.row]
+        let product = products[indexPath.row]
         cell.configure(with: product)
         return cell
     }
