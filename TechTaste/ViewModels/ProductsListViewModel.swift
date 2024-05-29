@@ -10,15 +10,23 @@ import Foundation
 class ProductsListViewModel {
     
     var products: [Product] = []
-    private var productRepository: ProductsRepository
+    private var networkingManager: NetworkingManager
     
-    init(productRepository: ProductsRepository = ProductsRepository()) {
-        self.productRepository = productRepository
+    init(networkingManager: NetworkingManager = NetworkingManager()) {
+        self.networkingManager = networkingManager
     }
     
     func getAllProducts() {
-        if let products = productRepository.loadProducts() {
-            self.products = products
+        networkingManager.getProductsList { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let products):
+                DispatchQueue.main.async {
+                    self.products = products
+                }
+            case .failure(let failure):
+                print("Ocorreu um erro ao obter produtos: \(failure.localizedDescription)")
+            }
         }
     }
     

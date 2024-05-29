@@ -16,7 +16,7 @@ enum NetworkError: Error {
 
 class NetworkingManager {
     func getProductsList(completion: @escaping ((Result<[Product], Error>) -> Void)) {
-        guard let url = URL(string: "https://my-json-server.typicode.com/alura-cursos/techtaste-api") else {
+        guard let url = URL(string: "https://my-json-server.typicode.com/alura-cursos/techtaste-api/products") else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
