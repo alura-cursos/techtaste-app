@@ -125,6 +125,9 @@ extension ProductsListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        guard let product = viewModel.getProductById(id: cellDataSource[indexPath.row].productId) else { return }
+        let productDetailsViewModel = ProductDetailsViewModel(product: product)
+        let productDetailsVC = ProductDetailsViewController(viewModel: productDetailsViewModel)
+        navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 }

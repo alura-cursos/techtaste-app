@@ -42,4 +42,11 @@ class ProductsListViewModel {
     func getNumberOfRowsOfTableView() -> Int {
         return products.value?.count ?? 0
     }
+    
+    func getProductById(id: Int) -> Product? {
+        guard let product = products.value?.first(where: { element in
+            element.id == id
+        }) else { return nil }
+        return product
+    }
 }
