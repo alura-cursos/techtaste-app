@@ -23,6 +23,13 @@ class ProductsListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        activityIndicatorView.color = .white
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicatorView
+    }()
+    
     private var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +63,7 @@ class ProductsListViewController: UIViewController {
     
     private func addSubviews() {
         view.addSubview(tableView)
+        view.addSubview(activityIndicatorView)
     }
     
     private func setupConstraints() {
@@ -65,6 +73,9 @@ class ProductsListViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24.0),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24.0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
@@ -75,6 +86,20 @@ class ProductsListViewController: UIViewController {
     
     private func bindViewModel() {
         bindProducts()
+        bindLoading()
+    }
+    
+    private func bindLoading() {
+        viewModel.isLoading.bind { [weak self] isLoading in
+            guard let self = self, let isLoading = isLoading else { return }
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.activityIndicatorView.startAnimating()
+                } else {
+                    self.activityIndicatorView.stopAnimating()
+                }
+            }
+        }
     }
     
     private func bindProducts() {
