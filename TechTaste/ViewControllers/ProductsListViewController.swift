@@ -15,6 +15,8 @@ class ProductsListViewController: UIViewController {
     
     private var viewModel: ProductsListViewModel
     
+    weak var coordinator: MainCoordinator?
+    
     init(viewModel: ProductsListViewModel = ProductsListViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -126,8 +128,9 @@ extension ProductsListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let product = viewModel.getProductById(id: cellDataSource[indexPath.row].productId) else { return }
-        let productDetailsViewModel = ProductDetailsViewModel(product: product)
+        /*let productDetailsViewModel = ProductDetailsViewModel(product: product)
         let productDetailsVC = ProductDetailsViewController(viewModel: productDetailsViewModel)
-        navigationController?.pushViewController(productDetailsVC, animated: true)
+        navigationController?.pushViewController(productDetailsVC, animated: true)*/
+        coordinator?.showProductDetails(for: product)
     }
 }

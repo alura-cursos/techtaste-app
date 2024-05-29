@@ -16,11 +16,13 @@ class MainCoordinator: Coordinator {
     
     func start() {
         let homeViewController = HomeViewController()
+        homeViewController.coordinator = self
         navigationController.pushViewController(homeViewController, animated: true)
     }
     
-    func showProductList() {
+    func showProductsList() {
         let productListViewController = ProductsListViewController()
+        productListViewController.coordinator = self
         navigationController.pushViewController(productListViewController, animated: true)
     }
 
